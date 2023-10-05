@@ -1,7 +1,15 @@
 {
-  "name": "hardhat-project",
+  "name": "hacking-smart-contracts",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "@openzeppelin/contracts": "^4.5.0"
+  },
   "devDependencies": {
     "@nomicfoundation/hardhat-toolbox": "^3.0.0",
-    "hardhat": "^2.17.4"
+    "@nomiclabs/hardhat-ethers": "2.2.3",
+    "hardhat": "^2.17.4",
+    "chai": "4.3.8",
+    "ethers": "5.7.2",
   }
 }
