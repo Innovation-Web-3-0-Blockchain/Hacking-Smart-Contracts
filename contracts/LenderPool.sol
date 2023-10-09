@@ -1,9 +1,6 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.4;
 
-// Import the ReentrancyGuard.sol file from the OpenZeppelin library to prevent reentrancy attacks
-// import "@openzeppelin/contracts/security/ReentrancyGuard.sol";
-
 // Interface for a contract that can receive Ether for flash loans
 interface IFlashLoanEtherReceiver {
     function execute(uint256 fee) external payable;
@@ -18,7 +15,7 @@ interface IFlashLoanEtherReceiver {
 // attacking contract, it's advisable to identify these vulnerabilities and understand how they can be exploited.
 
 // LenderPool contract for managing flash loans and depositors' balances
-contract LenderPool is ReentrancyGuard {
+contract LenderPool { 
     uint256 public loanCount; // Total number of flash loans executed
     uint256 public constant FEE = 1 ether; // Fixed fee for each flash loan
     mapping(address => Depositor) public depositors; // Depositors' balances

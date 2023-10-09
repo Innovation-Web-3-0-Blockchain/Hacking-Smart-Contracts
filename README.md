@@ -1,16 +1,21 @@
 # Hacking-Smart-Contracts
 
-Welcome to the `Hacking-Smart-Contracts` repository. The primary purpose of this project is to provide a platform for ethical hacking and security analysis of smart contracts within decentralized applications (DApps). While blockchain and smart contracts offer transparency and security benefits, they are not immune to vulnerabilities and exploits. It's crucial to understand how malicious actors, often referred to as "blackhat" hackers, can attempt to compromise smart contracts and the decentralized ecosystem.
+Welcome to the `Hacking-Smart-Contracts` repository. This project primarily aims to demonstrate ethical hacking on smart contracts used in decentralized applications (DApps). Although blockchain and smart contracts bring transparency and security advantages, they are not impervious to vulnerabilities and potential exploits. 
 
 ## Table of Contents
 
 - [Verification and Security](#verification-and-security)
 - [Commented Code](#commented-code)
 - [Getting Started](#getting-started)
-- [Security Considerations](#security-considerations)
+  - [Clone the Repository](#clone-the-repository)
+  - [Install Dependencies](#install-dependencies)
+- [Features](#features)
+  - [Types Of Exploits](#types-of-exploits)
+  - [Smart Contracts Hacking](#smart-contracts-hacking) 
 - [Contributing](#contributing)
 - [License](#license)
 - [Future Updates](#future-updates)
+- [Additional Ressources](#additionnal-ressources)
 
 ## Verification and Security
 
@@ -22,27 +27,60 @@ Each modification to this project undergoes a meticulous verification process an
 
 ## Getting Started
 
-To explore and interact with the Aave Flash Loan Contract, follow these steps:
+### Clone the Repository
 
-1. Ensure you have `node.js` and `npm` installed in your environment.
+To explore and interact with the `HackingSmartContracts` project, follow these steps:
 
-2. Clone this repository to your local machine.
+1. Clone this repository to your local machine.
 
+   ```bash
+   git clone https://github.com/CyberAnon1010101/Blockchain-HackingSmartContracts.git 
+   ```
+### Install Dependencies
+
+2. Ensure you have `node.js` and `npm` installed in your environment.
+  
 3. Install the necessary dependencies by running the following command in your terminal:
 
    ```bash
    npm install
    ```
+   
+## Features 
 
-## Security Considerations
+### Types Of Exploits
 
-Decentralized applications rely heavily on smart contracts, and while they offer many benefits, they also introduce unique security challenges. Here are some potential vulnerabilities and security considerations that blackhat hackers may exploit:
+Decentralized applications heavily depend on smart contracts, and although they come with numerous advantages, they also bring forth distinctive security concerns. Here are some potential exploits that blackhat hackers might attempt:
 
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+   - Reentrancy Attacks 
+   - Integer Overflow-Underflow Attacks
+   - Uninitialized Storage Pointer Attacks
+   - Denial of Service Attacks
+   - Front-Running Attacks
+   - Unprotected Private Data
+   - Access Control Issues
+   - Malicious Code Injection
+   - Smart Contract Bugs
+   - Oracle Exploitation
+   - Token Vulnerabilities
 
-**Will be updated soon**
+   ***More will be added***
 
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+To gain a thorough and in-depth comprehension of potential hacker attacks, please consult our [Hacking Project Documentations](./Hacking-Project-Documentations/ATTACKS.md).
+
+## Smart Contracts Hacking
+
+In this project, we will explore various smart contracts related to potential hacker attacks. Each contract serves as an example of they can exploit vulnerabilities in smart contracts.
+
+- **Reentrancy Attacks:** 
+
+We will be using three contracts, to illustrate how hackers can leverage reentrancy attacks.`Attack.sol`, `FlashLoanReceiver.sol`, and `LenderPool.sol`.
+
+- **Integer Overflow-Underflow Attacks** *(Update in Progress)* 
+
+**More contracts and attack types will be added in the future.**
+
+For a more detailed understanding of the vulnerabilities or functionality of each contract, please refer to our [Hacking Project Documentations](./Hacking-Project-Documentations/CONTRACTS.md).
 
 ## Contributing
 
@@ -54,4 +92,31 @@ This project is licensed under the [MIT License](LICENSE).
 
 ## Future Updates
 
-As blackhat hackers seek new ways to exploit smart contracts, we're dedicated to staying ahead in ethical hacking techniques. Expect ongoing enhancements, including advanced security guides, cutting-edge tools, community input, interactive challenges, testing framework integration, real-world case studies, and regular updates.
+As blackhat hackers seek new ways to exploit smart contracts, we're dedicated to staying ahead in ethical hacking techniques. Expect ongoing enhancements, including advanced security guides, community input, interactive challenges, testing framework integration, real-world case studies, and regular updates.
+
+## Additional Resources
+
+### Smart Contracts Bug Bounties
+
+1. **Ethereum (Blockchain)**
+   - [Ethereum Bug Bounty Program](https://ethereum.org/ig/bug-bounty/)
+
+2. **MakerDAO (Stablecoin)**
+   - [MakerDAO Bug Bounty Program](https://security.makerdao.com/bug-bounty-program)
+
+3. **Chainlink (Data Feeds)**
+   - [Chainlink Bug Bounty Program](https://blog.chain.link/expanding-the-chainlink-bug-bounty-program/)
+
+4. **Aave (Lending & Borrowing)**
+   - [Aave Bug Bounty Program](https://github.com/aave/bug-bounty)
+
+5. **Synthetix (Synthetic Assets)**
+   - [Synthetix Bug Bounty Program](https://blog.synthetix.io/synthetix-bug-bounties/)
+
+6. **Yearn Finance (Yield Aggregator)**
+   - [Yearn Finance Bug Bounty Program](https://immunefi.com/bounty/yearnfinance/)
+
+7. **OpenSea (NFT)**
+   - [OpenSea Bug Bounty Program](https://opensea.io/blog/articles/openseas-bug-bounty-program)
+
+
