@@ -7,8 +7,6 @@ Welcome to the `Hacking-Smart-Contracts` repository. This project primarily aims
 - [Verification and Security](#verification-and-security)
 - [Commented Code](#commented-code)
 - [Getting Started](#getting-started)
-  - [Clone the Repository](#clone-the-repository)
-  - [Install Dependencies](#install-dependencies)
 - [Features](#features)
   - [Types Of Exploits](#types-of-exploits)
   - [Smart Contracts Hacking](#smart-contracts-hacking) 
@@ -27,8 +25,6 @@ Each modification to this project undergoes a meticulous verification process an
 
 ## Getting Started
 
-### Clone the Repository
-
 To explore and interact with the `HackingSmartContracts` project, follow these steps:
 
 1. Clone this repository to your local machine.
@@ -36,7 +32,6 @@ To explore and interact with the `HackingSmartContracts` project, follow these s
    ```bash
    git clone https://github.com/CyberAnon1010101/Blockchain-HackingSmartContracts.git 
    ```
-### Install Dependencies
 
 2. Ensure you have `node.js` and `npm` installed in your environment.
   
@@ -52,11 +47,12 @@ To explore and interact with the `HackingSmartContracts` project, follow these s
 
 Decentralized applications heavily depend on smart contracts, and although they come with numerous advantages, they also bring forth distinctive security concerns. Here are some potential exploits that blackhat hackers might attempt:
 
-   - Reentrancy Attacks 
-   - Integer Overflow-Underflow Attacks
-   - Uninitialized Storage Pointer Attacks
-   - Denial of Service Attacks
-   - Front-Running Attacks
+   - Reentrancy Attack
+   - Integer Overflow Attack
+   - Integer Underflow Attack
+   - Uninitialized Storage Pointer Attack
+   - Denial of Service Attack
+   - Front-Running Attack
    - Unprotected Private Data
    - Access Control Issues
    - Malicious Code Injection
@@ -64,21 +60,23 @@ Decentralized applications heavily depend on smart contracts, and although they 
    - Oracle Exploitation
    - Token Vulnerabilities
 
-   ***More will be added***
-
 To gain a thorough and in-depth comprehension of potential hacker attacks, please consult our [Hacking Project Documentations](./Hacking-Project-Documentations/ATTACKS.md).
 
 ## Smart Contracts Hacking
 
 In this project, we will explore various smart contracts related to potential hacker attacks. Each contract serves as an example of they can exploit vulnerabilities in smart contracts.
 
-- **Reentrancy Attacks:** 
+- **Reentrancy Attack:** 
 
-We will be using three contracts, to illustrate how hackers can leverage reentrancy attacks.`Attack.sol`, `FlashLoanReceiver.sol`, and `LenderPool.sol`.
+   Contracts used: `ReentrancyAttack.sol`, `FlashLoanReceiver.sol`, and `LenderPool.sol`.
 
-- **Integer Overflow-Underflow Attacks** *(Update in Progress)* 
+- **Integer Overflow Attack**  
+   
+   Contracts used: *(Update in Progress)*
 
-**More contracts and attack types will be added in the future.**
+- **Integer Underflow Attack**
+
+   Contracts used: `IntegerUnderflowAttack.sol`, and `LenderPoolOne.sol`.
 
 For a more detailed understanding of the vulnerabilities or functionality of each contract, please refer to our [Hacking Project Documentations](./Hacking-Project-Documentations/CONTRACTS.md).
 

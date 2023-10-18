@@ -1,11 +1,6 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.4;
 
-// In a hypothetical scenario, an individual with malicious intent uncovers that a participant 
-// in the lender pool has deployed a contract to receive flash loans. This contract is publicly 
-// available on Etherscan. After a thorough examination, the malicious actor identifies a 
-// vulnerability and makes an attempt to abscond with all the Ether contained within it.
-
 contract FlashLoanReceiver {
     address payable public pool;
 

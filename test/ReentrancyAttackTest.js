@@ -4,7 +4,7 @@ const { expect } = require("chai");
 // Importing the 'ethers' library from 'hardhat' for Ethereum smart contract interaction
 const { ethers } = require("hardhat");
 
-describe("Execute Attack", function () {
+describe("Reentrancy Attack", function () {
   let deployer, hacker;
   // Pool has 1000 ETH in balance
   const ETHER_IN_POOL = ethers.utils.parseEther('1000');
@@ -49,8 +49,8 @@ describe("Execute Attack", function () {
   });
 
   it('Exploit', async function () {
-    // Perform the exploit by deploying the Attack contract and calling the flashLoanAttack function
-    const AttackFactory = await ethers.getContractFactory('Attack', hacker)
+    // Perform the exploit by deploying the ReentrancyAttack contract and calling the flashLoanAttack function
+    const AttackFactory = await ethers.getContractFactory('ReentrancyAttack', hacker)
     this.attack = await AttackFactory.deploy(this.pool.address, this.receiver.address)
     await this.attack.flashLoanAttack()
   });

@@ -1,12 +1,9 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.4;
+
 import "./LenderPool.sol";
 
-// OBJECTIVE OF THE ATTACK:
-// Execute a single transaction to take control of all the Ether stored within both 
-// the lender pool and the flash loan receiver contract.
-
-contract Attack {
+contract ReentrancyAttack {
     // Declare state variables
     LenderPool public pool; // Reference to the LenderPool contract
     address public immutable receiver; // Address of the receiver

@@ -6,16 +6,8 @@ interface IFlashLoanEtherReceiver {
     function execute(uint256 fee) external payable;
 }
 
-// This lending pool contract stores deposited Ether, which can be utilized for executing flash loans. 
-// A predetermined fee is imposed for each flash loan transaction. Depositors have the option to claim 
-// a share of the cumulative fees collected. The proportion of fees they can claim is determined by the 
-// ratio of their deposited balance to the average pool balance since the last change in their deposited balance.
-
-// It's important to note that there are some vulnerabilities within this contract. Before examining the 
-// attacking contract, it's advisable to identify these vulnerabilities and understand how they can be exploited.
-
 // LenderPool contract for managing flash loans and depositors' balances
-contract LenderPool { 
+contract LenderPoolOne { 
     uint256 public loanCount; // Total number of flash loans executed
     uint256 public constant FEE = 1 ether; // Fixed fee for each flash loan
     mapping(address => Depositor) public depositors; // Depositors' balances
@@ -28,7 +20,7 @@ contract LenderPool {
     }
 
     // Deposit Ether into the pool
-    function deposit() external payable nonReentrant {
+    function deposit() external virtual payable {
         Depositor storage depositor = depositors[msg.sender];
         
         // If the depositor has deposited before, update their reward debt
@@ -51,7 +43,7 @@ contract LenderPool {
     }
 
     // Withdraw Ether from the pool
-    function withdraw(uint _amount) external {
+    function withdraw(uint _amount) external virtual {
         Depositor storage depositor = depositors[msg.sender];
         require(_amount <= depositor.balance, "Insufficient balance");
         
@@ -91,7 +83,7 @@ contract LenderPool {
     }
 
     // Execute a flash loan
-    function flashLoan(address borrowingContract, uint256 amount) external nonReentrant {
+    function flashLoan(address borrowingContract, uint256 amount) external {
         uint256 balanceBefore = address(this).balance;
         require(balanceBefore >= amount, "Not enough ETH in balance");
         
