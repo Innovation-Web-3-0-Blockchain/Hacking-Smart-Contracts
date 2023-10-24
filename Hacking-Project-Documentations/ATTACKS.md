@@ -25,17 +25,8 @@ In a Reentrancy attack, an attacker calls an external contract within the target
 
 ```solidity
 // Vulnerable code snippet
-contract LenderPool { 
-    uint256 public loanCount; 
-    uint256 public constant FEE = 1 ether;
-    mapping(address => Depositor) public depositors; 
-    mapping(uint256 => uint256) public poolBalanceSnapshots; 
-
-    struct Depositor {
-        uint256 balance;                
-        uint256 lastUpdateLoanCount;    
-        uint256 rewardDebt;          
-    }
+contract LenderPool {    
+}
 ```
 
 The vulnerable code snippet does not include any access control mechanisms. Anyone can interact with the `LenderPool.sol` contract's functions and variables.
@@ -43,22 +34,14 @@ The vulnerable code snippet does not include any access control mechanisms. Anyo
 2. Solution 
 
 ```solidity
-// At the beginning of the file input
+// At the beginning of the contract input
 import "@openzeppelin/contracts/security/ReentrancyGuard.sol";
 
 // Updated code snippet
-contract LenderPool is ReentrancyGuard { 
-    uint256 public loanCount; 
-    uint256 public constant FEE = 1 ether;
-    mapping(address => Depositor) public depositors; 
-    mapping(uint256 => uint256) public poolBalanceSnapshots; 
-
-    struct Depositor {
-        uint256 balance;                
-        uint256 lastUpdateLoanCount;    
-        uint256 rewardDebt;          
-    }
+contract LenderPool is ReentrancyGuard {       
+}
 ```
+
 The solution code begins with an import statement that fetches the `ReentrancyGuard.sol` contract from the OpenZeppelin library. `ReentrancyGuard.sol` is a contract designed to protect against reentrancy attacks in Ethereum smart contracts.
 
 ---
@@ -67,30 +50,29 @@ The solution code begins with an import statement that fetches the `ReentrancyGu
 
 An Integer overflow attack in smart contracts happens when an arithmetic operation on an integer variable exceeds the maximum (or minimum, in the case of signed integers) representable value for that variable type.
 
-**LenderPoolOne.sol:**
+**IntegerOverflowVulnerabilityExample.sol:**
 
 1. Vurability
 
 ```solidity
-// Vulnerable code snippet
-
+// Vulnerable code snippets
+function deposit(uint256 amount) public {
+    balance += amount;
+}
 ```
-DETAILS FOR THE VULNERABLE CODE SNIPPET
+
+The vulnerable code snippet does not offer reliable protection against integer overflow. While it aims to identify potential overflows by comparing the result of an addition with the original balance, this method is not entirely reliable.
 
 2. Solution 
 
 ```solidity
-// Add safeguards in the contract
-
-
-
 // Updated code snippet 
-
-
+function deposit(uint256 amount) public {
+    require(balance + amount >= balance, "Deposit Failed");
 }
 ```
 
-EXPLAINING SOLUTION
+The solution code adds a safety check to the deposit function to protect against integer overflow vulnerabilities. It ensures that the balance can only be updated if the addition of the amount does not lead to an overflow.
 
 ---
 
@@ -98,52 +80,35 @@ EXPLAINING SOLUTION
 
 An Integer underflow attack in smart contracts occurs when a subtraction operation causes an unsigned integer variable to become smaller than zero.
 
-**LenderPoolOne.sol:**
+**IntegerUnderflowVulnerabilityExample.sol:**
 
 1. Vurability
 
 ```solidity
 // Vulnerable code snippet
-uint _undebitedReward = _poolProportion * (FEE * _snapshots);
+function withdraw(uint256 amount) external returns (bool) {
+    if (balances[msg.sender] >= amount) {
+        balances[msg.sender] -= amount;
+}
 ```
-The vulnerable code snippet does not have appropriate checks and validations to ensure that `_poolProportion` and `_snapshots` are not zero or negative before performing the multiplication and does not handle such cases safely to prevent underflows.
+
+The vulnerable code snippet is not performing the check for integer underflows effectively. While it does compare the balance with the withdrawal amount to avoid withdrawing more than the balance, it doesn't explicitly prevent subtraction that might lead to underflows in certain situations
 
 2. Solution 
 
 ```solidity
-// Add safeguards in the contract
-
-
 // Updated code snippet 
-function rewardBalance(address _depositorAddr) public view returns (uint256) {
-    Depositor memory _depositor = depositors[_depositorAddr];
-    uint sum;
+    function withdraw(uint256 amount) external returns (bool) {
+        if (amount <= balances[msg.sender]) {
+            balances[msg.sender] -= amount;
 
-    for (uint i = _depositor.lastUpdateLoanCount + 1; i <= loanCount; i++) {
-        sum += poolBalanceSnapshots[i];
-    }
-
-    if (sum == 0 || _depositor.balance == 0) return 0;
-
-    uint _snapshots = loanCount - _depositor.lastUpdateLoanCount;
-
-    require(_snapshots > 0, "No snapshots since the last update");
-    require(_poolProportion > 0, "Pool proportion must be greater than zero");
-
-    uint _poolBalanceAverage = sum / _snapshots;
-
-    uint _poolProportion = _depositor.balance / _poolBalanceAverage;
-
-    uint _undebitedReward = _poolProportion * (FEE * _snapshots);
-
-    return (_undebitedReward * _depositor.rewardDebt);
-    }
+            require(payable(msg.sender).send(amount, "Transfer Failed"));
+}
 ```
 
-The solution code includes two `require` statements to check if `_snapshots` and `_poolProportion` are greater than zero before proceeding with the calculation. This prevents integer underflow vulnerabilities by ensuring that both the divisor and multiplier are always greater than zero.
+The solution code prevents integer underflow by checking whether the withdrawal amount is less than or equal to the user's balance before processing the withdrawal and ensures that the transfer is done safely, with proper error handling.
 
 ---
-
 
 ## Uninitialized Storage Pointer Attacks
 

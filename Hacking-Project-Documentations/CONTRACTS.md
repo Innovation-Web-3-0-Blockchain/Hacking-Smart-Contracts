@@ -2,10 +2,10 @@
 
 - [Lending Pool Contracts](#lending-pool-contracts)
    - [LenderPool Contract](#lenderpool-contract)
-   - [LenderPoolOne Contract](#lenderpoolone-contract)
 - [Attack Contracts](#attack-contracts)
    - [ReentrancyAttack Contract](#reentrancyattack-contract)
-   - [IntegerUnderflowAttack Contract](#integerunderflowattack-contract)
+   - [IntegerOverflowVulnerabilityExample Contract](#integeroverflowvulnerabilityexample-contract)
+   - [IntegerUnderflowExample Contract](#integerunderflowExample-contract)
 - [Attack Testing](#attack-testing)
    - [Reentrancy Attack Test](#reentrancy-attack-test)
    - [IntegerUnderflow Attack Test](#integerunderflow-attack-test)
@@ -28,12 +28,6 @@ The `LenderPool.sol` contract exposes several significant vulnerabilities that c
 4. **Lack of Access Control**: There is no access control mechanism to restrict certain functions to authorized users only. Anyone can deposit, withdraw, or claim rewards, which could lead to misuse.
 
 5. **Flash Loan Vulnerability**: The `flashLoan` function allows borrowing Ether without any collateral or checks. If a malicious contract repeatedly calls this function and doesn't repay the loan, it can drain the pool's funds.
-
----
-
-### LenderPoolOne Contract
-
-The `LenderPoolOne.sol` contract employs the same code framework as the `LenderPool.sol` contract, with the sole distinction being the use of different artifacts to define certain variables. This ensures that there is no interference during various attack testing scenarios.
 
 ---
 
@@ -70,39 +64,27 @@ The attacker can execute the `flashLoanAttack` function in the `ReentrancyAttack
 
 ---
 
-### IntegerUnderflowAttack Contract
+### IntegerOverflowVulnerabilityExample Contract
 
-The `IntegerUnderflowAttack.sol` contract illustrates how a malicious actor can take advantage of a weakness within the `LenderPoolOne.sol` contract, particularly within the `withdraw` function. Here's a comprehensive breakdown of the functionalities provided by the attacking contract:
-
-1. **Inheriting from LenderPoolOne**: The `IntegerUnderflowAttack.sol` contract inherits from the `LenderPoolOne.sol` contract, which means it has access to all the functions and variables defined in the lending pool.
-
-2. **Override the withdraw Function**: The `IntegerUnderflowAttack.sol` contract overrides the `withdraw` function from the lending pool. This allows it to customize the behavior of the `withdraw` function while still retaining the original function's signature.
-
-3. **Integer Underflow**: Within the overridden `withdraw` function, the attacking contract execute an integer underflow. It does this by subtracting the `_amount` parameter from the `depositor.balance` without proper bounds checks.
-
-   ```solidity
-   depositor.balance -= _amount;
-   ```
-
-4. **Transfer Ether**: After executing the underflow, the `IntegerUnderflowAttack.sol` contract transfers the `_amount` of Ether to the message sender.
-
-   ```solidity
-   payable(msg.sender).transfer(_amount); 
-   ```
+The `IntegerOverflowVulnerabilityExample` contract demonstrates an integer overflow vulnerability by lacking the necessary checks and validations
 
 ### What The Hacker Can Do
 
-A hacker can potentially exploit the vulnerability in the `IntegerUnderflowAttack.sol` contract to manipulate the `LenderPoolOne.sol` contract in various ways. Here's what a hacker might do:
+In the context of a smart contract with an integer overflow vulnerability, a hacker can potentially exploit this vulnerability to their advantage. Here's what an attacker could do if they discover an integer overflow vulnerability in a contract:
 
-1. **Artificially Inflate Balances**: By triggering an integer underflow in the `withdraw` function, the hacker can make a depositor's balance significantly larger than it should be. This can be done by requesting a withdrawal of an amount that exceeds the depositor's balance. The result of the underflow would be a very large positive balance.
+1. An attacker can intentionally deposit a large amount of tokens into the contract, causing an integer overflow. This would make the contract's `balance` variable wrap around to a very small value, effectively granting the attacker a huge amount of tokens.
 
-2. **Unauthorized Withdrawals**: With the artificially inflated balance, the attacker can then initiate multiple withdrawals, potentially depleting the `LenderPoolOne.sol`contract's Ether balance, as they might be able to withdraw more Ether than what the pool should allow.
+2. With an inflated `balance` due to integer overflow, the attacker can then withdraw more tokens than the contract actually holds. This can deplete the contract's balance and potentially disrupt its intended functionality.
 
-3. **Disrupt Functionality**: The hacker's actions could disrupt the normal functioning of the `LenderPoolOne.sol` contract by draining its Ether reserves, rendering it unable to provide flash loans and honor the claims of legitimate depositors.
+3. Depending on the contract's logic and how it interacts with the `balance` variable, an attacker might manipulate the contract in unintended ways. For example, they could disrupt the contract's normal operations or trick it into processing transactions that it wouldn't normally approve.
 
-4. **Influence Reward Calculations**: By manipulating their balance and the pool's balance snapshots, the attacker can influence the reward calculations in their favor, potentially receiving a disproportionate share of fees collected in the pool.
+---
 
-5. **Deplete the Pool**: The hacker might conduct a series of attacks that target the pool's Ether balance and effectively drain it of funds, making it insolvent and unable to meet its obligations.
+### IntegerUnderflowExample Contract
+
+The `IntegerUnderflowVulnerabilityExample.sol` contract illustrates a basic example of handling deposits and withdrawals. There's no mechanism to prevent integer underflow.
+
+### What The Hacker Can Do
 
 ---
 
@@ -113,7 +95,17 @@ A hacker can potentially exploit the vulnerability in the `IntegerUnderflowAttac
 To Run an Rentrancy attack test:
 
 ```bash
-npx hardhat test test/ReentrancyAttackTest.js
+npx hardhat test test/1_ReentrancyAttackTest.js
+```
+
+---
+
+### IntegerOverflow Attack Test
+
+To Run an Integer overflow attack test:
+
+```bash
+npx hardhat test test/2_IntegerOverFlowVulnerabilityTest.js
 ```
 
 ---
@@ -123,7 +115,7 @@ npx hardhat test test/ReentrancyAttackTest.js
 To Run an Integer underflow attack test:
 
 ```bash
-npx hardhat test test/IntegerUnderflowAttack.js
+npx hardhat test test/3_IntegerUnderflowAttackTest.js
 ```
 
 ---
@@ -140,4 +132,4 @@ The `FlashLoanReceiver.sol` contract is a smart contract designed to interact wi
 
 ---
 
-***Will be updated soon***
+

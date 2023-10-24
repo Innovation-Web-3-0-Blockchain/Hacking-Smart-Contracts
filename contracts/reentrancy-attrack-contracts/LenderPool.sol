@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.8.4;
+pragma solidity ^0.8.0;
 
 // Interface for a contract that can receive Ether for flash loans
 interface IFlashLoanEtherReceiver {
@@ -10,9 +10,6 @@ interface IFlashLoanEtherReceiver {
 // A predetermined fee is imposed for each flash loan transaction. Depositors have the option to claim 
 // a share of the cumulative fees collected. The proportion of fees they can claim is determined by the 
 // ratio of their deposited balance to the average pool balance since the last change in their deposited balance.
-
-// It's important to note that there are some vulnerabilities within this contract. Before examining the 
-// attacking contract, it's advisable to identify these vulnerabilities and understand how they can be exploited.
 
 // LenderPool contract for managing flash loans and depositors' balances
 contract LenderPool { 
