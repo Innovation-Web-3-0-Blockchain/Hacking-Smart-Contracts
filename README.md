@@ -72,13 +72,17 @@ In this project, we will explore various smart contracts related to potential ha
 
 - **Integer Overflow Attack**  
    
-   Contracts used: `IntegerOverflowVulnerabilityExample.sol`.
+   Contract used: `IntegerOverflowVulnerabilityExample.sol`.
 
 - **Integer Underflow Attack**
 
-   Contracts used: `IntegerUnderflowVulnerabilityExample.sol `.
+   Contract used: `IntegerUnderflowVulnerabilityExample.sol `.
 
-- **Uninitialized Storage Pointer Attack** *(Update in Progress)*
+- **Uninitialized Storage Pointer Attack** 
+
+   Contract used: `UninitializedStoragePointerVulnerabilityExample.sol`.
+
+- **Denial of Service Attack** *(Update in Progress)*
 
 For a more detailed understanding of the vulnerabilities or functionality of each contract, please refer to our [Hacking Project Documentations](./Hacking-Project-Documentations/CONTRACTS.md).
 

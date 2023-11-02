@@ -3,12 +3,15 @@
 - [Lending Pool Contracts](#lending-pool-contracts)
    - [LenderPool Contract](#lenderpool-contract)
 - [Attack Contracts](#attack-contracts)
-   - [ReentrancyAttack Contract](#reentrancyattack-contract)
-   - [IntegerOverflowVulnerabilityExample Contract](#integeroverflowvulnerabilityexample-contract)
-   - [IntegerUnderflowExample Contract](#integerunderflowExample-contract)
+   - [Reentrancy Attack Contract](#reentrancyattack-contract)
+   - [Integer Overflow Vulnerability Example Contract](#integer-overflow-vulnerability-example-contract)
+   - [Integer Underflow Vulnerability Example Contract](#integerunderflow-vulnerability-example-contract)
+   - [Uninitialized Storage Pointer Vulnerability Example Contract](#uninitialized-storage-pointer-vulnerability-example-contract)
 - [Attack Testing](#attack-testing)
    - [Reentrancy Attack Test](#reentrancy-attack-test)
+   - [IntegeOverflow Attack Test](#integerunderflow-attack-test)
    - [IntegerUnderflow Attack Test](#integerunderflow-attack-test)
+   - [Uninitialized Storage Pointer Attack Test](#uninitialized-storage-pointer-attack-test)
 - [FlashLoanReceiver Contract](#flashloanreceiver-contract)
 
 ---
@@ -33,7 +36,7 @@ The `LenderPool.sol` contract exposes several significant vulnerabilities that c
 
 ## Attack Contracts
 
-### ReentrancyAttack Contract
+### Reentrancy Attack Contract
 
 The `ReentrancyAttack.sol` contract demonstrates how an attacker can exploit the vulnerabilities in the `LenderPool.sol` contract on behalf of the owner. Here's a detailed explanation of the functions inside this contract:
 
@@ -64,13 +67,13 @@ The attacker can execute the `flashLoanAttack` function in the `ReentrancyAttack
 
 ---
 
-### IntegerOverflowVulnerabilityExample Contract
+### Integer Overflow Vulnerability Example Contract
 
 The `IntegerOverflowVulnerabilityExample` contract demonstrates an integer overflow vulnerability by lacking the necessary checks and validations
 
 ### What The Hacker Can Do
 
-In the context of a smart contract with an integer overflow vulnerability, a hacker can potentially exploit this vulnerability to their advantage. Here's what an attacker could do if they discover an integer overflow vulnerability in a contract:
+If a smart contract has an integer overflow vulnerability, a hacker can potentially exploit this vulnerability to their advantage. Here's what an attacker could do if they discover an integer overflow vulnerability in a contract:
 
 1. An attacker can intentionally deposit a large amount of tokens into the contract, causing an integer overflow. This would make the contract's `balance` variable wrap around to a very small value, effectively granting the attacker a huge amount of tokens.
 
@@ -80,11 +83,37 @@ In the context of a smart contract with an integer overflow vulnerability, a hac
 
 ---
 
-### IntegerUnderflowExample Contract
+### Integer Underflow Example Contract
 
 The `IntegerUnderflowVulnerabilityExample.sol` contract illustrates a basic example of handling deposits and withdrawals. There's no mechanism to prevent integer underflow.
 
 ### What The Hacker Can Do
+
+If a smart contract has an integer underflow vulnerability, it may lead to unintended behavior and exploitation. Here's what a hacker could potentially do with a smart contract that an integer underflow vulnerability: 
+
+1. By repeatedly withdrawing more funds than they have in their account, an attacker can reduce their balance to zero and then potentially wrap the uint256 variable, causing it to underflow and become a very large positive value. This manipulation can give the attacker a large, undeserved balance.
+
+2. Depending on how the contract handles the underflow, it's possible that an attacker could create a negative balance in their account. This could potentially allow them to withdraw more funds than they initially deposited, essentially stealing from the contract.
+
+3. If the underflow is not properly handled, it could lead to a disruption in the contract's operation, affecting other users and the contract's overall functionality.
+
+---
+
+### Uninitialized Storage Pointer Vulnerability Example Contract
+
+The `UninitializedStoragePointerVulnerabilityExample.sol` contract illustrates an uninitialized storage pointer vulnerability. This vulnerability arises when a contract declares a local variable in this case, `storedBalance` without explicitly initializing it and then performs operations using that variable.
+
+### What The Hacker Can Do
+
+If a smart contract contains an uninitialized storage pointer vulnerability, it can result in unintended behavior and create opportunities for exploitation. Here's how an attacker could take advantage of the vulnerability:
+
+1. The uninitialized storage pointer may contain data from previous operations or even other contracts. An attacker could read this uninitialized data to gain insights into the contract's state, which may include sensitive information or other users' balances.
+
+2. An attacker could use the uninitialized storage pointer to manipulate the `storedBalance` variable, affecting the balances of different users. They could artificially inflate their balance or reduce the balance of others, leading to potential financial losses for users of the contract.
+
+3. If the uninitialized storage pointer vulnerability is part of a more complex contract, an attacker may exploit it to gain unauthorized access to certain parts of the contract, enabling them to execute privileged functions or change contract settings.
+
+6. By carefully exploiting the uninitialized storage pointer and manipulating `storedBalance`, an attacker might be able to steal funds from the contract or other users.
 
 ---
 
@@ -115,7 +144,17 @@ npx hardhat test test/2_IntegerOverFlowVulnerabilityTest.js
 To Run an Integer underflow attack test:
 
 ```bash
-npx hardhat test test/3_IntegerUnderflowAttackTest.js
+npx hardhat test test/3_IntegerUnderflowVulnerabilityTest.js
+```
+
+---
+
+### Uninitialized Storage Pointer Attack Test
+
+To Run an uninitialized storage pointer attack test:
+
+```bash
+npx hardhat test test/4_UninitializedStoragePointerVulnerabilityTest.js
 ```
 
 ---

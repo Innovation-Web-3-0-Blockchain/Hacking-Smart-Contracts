@@ -76,7 +76,7 @@ The solution code adds a safety check to the deposit function to protect against
 
 ---
 
-## Integer Underflow Attacks
+## Integer Underflow Attack
 
 An Integer underflow attack in smart contracts occurs when a subtraction operation causes an unsigned integer variable to become smaller than zero.
 
@@ -86,9 +86,10 @@ An Integer underflow attack in smart contracts occurs when a subtraction operati
 
 ```solidity
 // Vulnerable code snippet
-function withdraw(uint256 amount) external returns (bool) {
-    if (balances[msg.sender] >= amount) {
-        balances[msg.sender] -= amount;
+function withdraw(uint256 amount) external returns {
+  if (balances[msg.sender] >= amount) {
+
+      balances[msg.sender] -= amount;
 }
 ```
 
@@ -98,11 +99,11 @@ The vulnerable code snippet is not performing the check for integer underflows e
 
 ```solidity
 // Updated code snippet 
-    function withdraw(uint256 amount) external returns (bool) {
-        if (amount <= balances[msg.sender]) {
-            balances[msg.sender] -= amount;
+function withdraw(uint256 amount) external returns {
+  if (amount <= balances[msg.sender]) {
+      balances[msg.sender] -= amount;
 
-            require(payable(msg.sender).send(amount, "Transfer Failed"));
+      require(payable(msg.sender).send(amount, "Transfer Failed"));
 }
 ```
 
@@ -110,21 +111,47 @@ The solution code prevents integer underflow by checking whether the withdrawal 
 
 ---
 
-## Uninitialized Storage Pointer Attacks
+## Uninitialized Storage Pointer Attack
 
-Contracts use storage to persist data. If a contract's state variables are not initialized properly, an attacker can manipulate uninitialized variables to their advantage.
+Smart contracts use storage to persist data. If a contract's state variables are not initialized properly, an attacker can manipulate uninitialized variables to their advantage.
+
+**UninitializedStoragePointerVulnerabilityExample.sol:**
+
+1. Vurability
+ 
+```solidity
+// Vulnerable code snippet
+function setBalance(uint256 _amount) public {
+    uint256 storedBalance;
+    storedBalance += balances[msg.sender];
+}
+```
+
+The vulnerable code snippet contains a variable that is not explicitly initialized, and when used in calculations, it will return 0. Solidity effectively adds the sender's balance to 0.
+
+2. Solution 
+
+```solidity
+// Updated code snippet 
+function setBalance(uint256 _amount) public {
+    uint256 storedBalance = balances[msg.sender];
+}
+```
+
+The key improvement in the solution code is that `storedBalance` is correctly initialized with the sender's current balance from the `balances` mapping.
+
+---
+
+## Denial of Service Attack
+
+Attackers may flood a smart contract with transactions or calls to overwhelm its resources, making it unresponsive or costly to execute.
+
 
 **Will be updated soon**
 
 ---
 
-## Denial of Service Attacks
-
-Attackers may flood a smart contract with transactions or calls to overwhelm its resources, making it unresponsive or costly to execute.
-
----
-
-## Front-Running Attacks
+## Front-Running Attack
 
 Front-running involves observing pending transactions and inserting your own transaction to take advantage of price changes or other conditions before the original transaction is confirmed.
 
