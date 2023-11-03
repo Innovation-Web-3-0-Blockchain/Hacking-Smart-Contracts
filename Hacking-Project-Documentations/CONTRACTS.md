@@ -1,22 +1,16 @@
 # Contracts 
 
-- [Lending Pool Contracts](#lending-pool-contracts)
-   - [LenderPool Contract](#lenderpool-contract)
+
+- [LenderPool Contract](#lenderpool-contract)
+- [FlashLoan Receiver Contract](#flashloan-receiver-contract)
 - [Attack Contracts](#attack-contracts)
-   - [Reentrancy Attack Contract](#reentrancyattack-contract)
+   - [Reentrancy Attack Contract](#reentrancy-attack-contract)
    - [Integer Overflow Vulnerability Example Contract](#integer-overflow-vulnerability-example-contract)
    - [Integer Underflow Vulnerability Example Contract](#integerunderflow-vulnerability-example-contract)
    - [Uninitialized Storage Pointer Vulnerability Example Contract](#uninitialized-storage-pointer-vulnerability-example-contract)
-- [Attack Testing](#attack-testing)
-   - [Reentrancy Attack Test](#reentrancy-attack-test)
-   - [IntegeOverflow Attack Test](#integerunderflow-attack-test)
-   - [IntegerUnderflow Attack Test](#integerunderflow-attack-test)
-   - [Uninitialized Storage Pointer Attack Test](#uninitialized-storage-pointer-attack-test)
-- [FlashLoanReceiver Contract](#flashloanreceiver-contract)
+   - [Denial of Service Vulnerability Example](#denial-of-service-vulnerability-example)
 
 ---
-
-## Lending Pool Contracts
 
 ### LenderPool Contract 
 
@@ -34,7 +28,21 @@ The `LenderPool.sol` contract exposes several significant vulnerabilities that c
 
 ---
 
+## FlashLoan Receiver Contract
+
+The `FlashLoanReceiver.sol` contract is a smart contract designed to interact with a lending pool and participate in flash loans. This contract exhibits multiple significant vulnerabilities that could potentially be exploited, thereby jeopardizing the contract's integrity. These vulnerabilities and their associated risks are outlined below:
+
+1. **Unauthorized Access**: The contract relies solely on checking the sender's address to ensure that flash loans can only be initiated by the lending pool. This access control mechanism is vulnerable to address spoofing and may allow external actors to execute flash loans.
+
+2. **Insufficient Balance Check**: The contract checks if it has enough Ether balance to repay the flash loan after receiving funds. However, this check doesn't consider any potential external factors that could change the contract's balance between the loan request and repayment, leaving room for exploits.
+
+3. **Custom Logic Vulnerability**: The `_executeActionDuringFlashLoan` function is intended for custom logic execution during flash loans. The presence of custom logic makes it more susceptible to the insertion of malicious code or the execution of actions that can compromised the contract's integrity.
+
+---
+
 ## Attack Contracts
+
+---
 
 ### Reentrancy Attack Contract
 
@@ -67,6 +75,16 @@ The attacker can execute the `flashLoanAttack` function in the `ReentrancyAttack
 
 ---
 
+### Testing
+
+To Run an Rentrancy attack test:
+
+```bash
+npx hardhat test test/1_ReentrancyAttackTest.js
+```
+
+---
+
 ### Integer Overflow Vulnerability Example Contract
 
 The `IntegerOverflowVulnerabilityExample` contract demonstrates an integer overflow vulnerability by lacking the necessary checks and validations
@@ -80,6 +98,14 @@ If a smart contract has an integer overflow vulnerability, a hacker can potentia
 2. With an inflated `balance` due to integer overflow, the attacker can then withdraw more tokens than the contract actually holds. This can deplete the contract's balance and potentially disrupt its intended functionality.
 
 3. Depending on the contract's logic and how it interacts with the `balance` variable, an attacker might manipulate the contract in unintended ways. For example, they could disrupt the contract's normal operations or trick it into processing transactions that it wouldn't normally approve.
+
+### IntegerOverflow Attack Test
+
+To Run an Integer overflow attack test:
+
+```bash
+npx hardhat test test/2_IntegerOverFlowVulnerabilityTest.js
+```
 
 ---
 
@@ -96,6 +122,16 @@ If a smart contract has an integer underflow vulnerability, it may lead to unint
 2. Depending on how the contract handles the underflow, it's possible that an attacker could create a negative balance in their account. This could potentially allow them to withdraw more funds than they initially deposited, essentially stealing from the contract.
 
 3. If the underflow is not properly handled, it could lead to a disruption in the contract's operation, affecting other users and the contract's overall functionality.
+
+---
+
+### Testing
+
+To Run an Integer underflow attack test:
+
+```bash
+npx hardhat test test/3_IntegerUnderflowVulnerabilityTest.js
+```
 
 ---
 
@@ -117,58 +153,56 @@ If a smart contract contains an uninitialized storage pointer vulnerability, it 
 
 ---
 
-## Attack Testing
-
-### Reentrancy Attack Test
-
-To Run an Rentrancy attack test:
-
-```bash
-npx hardhat test test/1_ReentrancyAttackTest.js
-```
-
----
-
-### IntegerOverflow Attack Test
-
-To Run an Integer overflow attack test:
-
-```bash
-npx hardhat test test/2_IntegerOverFlowVulnerabilityTest.js
-```
-
----
-
-### IntegerUnderflow Attack Test
-
-To Run an Integer underflow attack test:
-
-```bash
-npx hardhat test test/3_IntegerUnderflowVulnerabilityTest.js
-```
-
----
-
-### Uninitialized Storage Pointer Attack Test
+### Testing
 
 To Run an uninitialized storage pointer attack test:
 
 ```bash
 npx hardhat test test/4_UninitializedStoragePointerVulnerabilityTest.js
 ```
+---
+
+### Denial of Service Vulnerability Example Contract
+
+The `DenialOfServiceVulnerabilityExample.sol` contract demonstrates a vulnerability to a Denial of Service. The vulnerability arises from an inefficient piece of code within the contract's `addData` function. This code has a nested loop that consumes a large amount of computational resources (gas) for each data element added.
+
+### What The Hacker Can Do
+
+1. The hacker creates a transaction to invoke the `addData` function, passing an array with a large number of elements or invoking the function multiple times with large arrays. The larger the array and the number of invocations, the more gas is consumed.
+
+2. The inefficient nested loop in the `addData` function consumes a substantial amount of gas for each iteration. By providing a large input array, the attacker can deplete the available gas limit for the transaction.
+
+3. If the gas limit is exceeded, the transaction fails to complete, and the changes made by the transaction, such as updating `totalValue` and `data`, are reverted. This effectively disrupts the intended functionality of the contract.
+
+4. If the attacker sends multiple such transactions, the contract may become unresponsive to other legitimate transactions because it is constantly running out of gas.
 
 ---
 
-## FlashLoanReceiver Contract
+### Testing
 
-The `FlashLoanReceiver.sol` contract is a smart contract designed to interact with a lending pool and participate in flash loans. This contract exhibits multiple significant vulnerabilities that could potentially be exploited, thereby jeopardizing the contract's integrity. These vulnerabilities and their associated risks are outlined below:
+To Run a denial of service attack test:
 
-1. **Unauthorized Access**: The contract relies solely on checking the sender's address to ensure that flash loans can only be initiated by the lending pool. This access control mechanism is vulnerable to address spoofing and may allow external actors to execute flash loans.
-
-2. **Insufficient Balance Check**: The contract checks if it has enough Ether balance to repay the flash loan after receiving funds. However, this check doesn't consider any potential external factors that could change the contract's balance between the loan request and repayment, leaving room for exploits.
-
-3. **Custom Logic Vulnerability**: The `_executeActionDuringFlashLoan` function is intended for custom logic execution during flash loans. The presence of custom logic makes it more susceptible to the insertion of malicious code or the execution of actions that can compromised the contract's integrity.
+```bash
+npx hardhat test test/5_DenialOfServiceVulnerabilityExampleTest.js
+```
 
 ---
 
+### Front Running Vulnerability Example Contract
 
+The `FrontRunningVulnerabilityExample.sol` contract
+
+### What The Hacker Can Do
+
+
+---
+
+### Testing
+
+To Run a front running attack test:
+
+```bash
+npx hardhat test test/6_FrontRunningVulnerabilityExampleTest.js
+```
+
+---
