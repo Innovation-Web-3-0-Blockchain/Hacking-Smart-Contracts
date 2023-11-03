@@ -14,6 +14,7 @@ Welcome to the `Hacking-Smart-Contracts` repository. This project primarily aims
 - [License](#license)
 - [Future Updates](#future-updates)
 - [Additional Ressources](#additionnal-ressources)
+- [Donations](#donations)
 
 ## Verification and Security
 
@@ -25,12 +26,12 @@ Each modification to this project undergoes a meticulous verification process an
 
 ## Getting Started
 
-To explore and interact with the `HackingSmartContracts` project, follow these steps:
+To explore and interact with our `Hacking-Smart-Contracts` project, follow these steps:
 
 1. Clone this repository to your local machine.
 
    ```bash
-   git clone https://github.com/CyberAnon1010101/Blockchain-HackingSmartContracts.git 
+   git clone https://github.com/Innovation-Web-3-0-Blockchain/Hacking-Smart-Contracts.git 
    ```
 
 2. Ensure you have `node.js` and `npm` installed in your environment.
@@ -82,7 +83,13 @@ In this project, we will explore various smart contracts related to potential ha
 
    Contract used: `UninitializedStoragePointerVulnerabilityExample.sol`.
 
-- **Denial of Service Attack** *(Update in Progress)*
+- **Denial of Service Attack** 
+
+   Contract used: `DoSVulnerabilityExample.sol`.
+
+- **Front-Running Attack** *(Update in Progress)*
+
+   Contract used: 
 
 For a more detailed understanding of the vulnerabilities or functionality of each contract, please refer to our [Hacking Project Documentations](./Hacking-Project-Documentations/CONTRACTS.md).
 
@@ -122,5 +129,21 @@ As blackhat hackers seek new ways to exploit smart contracts, we're dedicated to
 
 7. **OpenSea (NFT)**
    - [OpenSea Bug Bounty Program](https://opensea.io/blog/articles/openseas-bug-bounty-program)
+
+## Donations
+
+### Our Values
+
+We do not use any form of social media or engage in marketing activities. Our principles are rooted in open source and privacy, and we do not receive compensation for our contributions to GitHub. Furthermore, we do not endorse or have affiliations with any other projects.
+
+### Supporting Us
+
+While we remain committed to providing valuable resources, any donations are greatly appreciated. Your support will help us offset the time and effort we invest in these projects to facilitate access to accessible information.
+
+### Donation Options
+
+We welcome contributions in Bitcoin and Monero, and you can send contributions by scanning one of the addresses in the QR codes at the following link: [Donate to Innovation Web 3.0](https://innovationweb3.github.io/)
+
+Thank you for your support and for being part of our community!
 
 
